@@ -1,0 +1,6 @@
+methods = ['cook', 'simmer','heat','roast','barbecue', 'barbeque','grill', 'broil', 'sear','bake','fry','boil','poach','steam','saute','smoke']
+meat = ['beef','liver','tongue','bone','buffalo','bison','calf', 'caribou', 'goat', 'ham', 'horse','lamb', 'marrow', 'moose', 'mutton', 'pork', 'bacon', 'rabbit', 'snake','alligator', 'ostrich', 'tripe', 'turtle', 'veal', 'tripe','ground beef','prosciutto','sausage']
+fish = ['fish', 'salmon', 'tilapia', 'trout', 'yellow tail', 'flounder', 'sea bass', 'halibut','octopus', 'scallop', 'shrimp', 'oyster', 'clam', 'mussle', 'lobster', 'crab', 'crawfish' ]
+cheese = ['cheese','cheddar','brie','goat cheese', 'parmesan', 'american cheese','provolone','swiss chese','manchego', 'cream cheese', 'colby cheese', 'string cheese']
+dairy = ['butter','milk', 'curd', 'custard', 'ice cream', 'creme fraiche', 'yogurt']
+vegetables = ['tomato', 'spinach','basil','celery','yam','pickle','cucumber','artichoke','arugula','asparagus','avocado','gourd','beet','green beans','bok choy', 'broccoli', 'chard','kale','chive','corn','mushroom', 'coriander','fennel','garlic','heart of palm', 'lettuce','olive','onion', 'pepper','potato','pumpkin','radish','nori','seaweed', 'sprout','squash','cabbage','shoots','zucchini']
