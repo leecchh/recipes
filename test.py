@@ -27,6 +27,7 @@ refinedHtml=rerefinedHtml
 splitHtml=refinedHtml.split()
 
 ingStrLst=["Find", "the", "closest", "stores", "(uses", "your", "location)"]
+ingStrEndLst=["Add", "all", "ingredients", "to", "list"]
 ingredientList=[]
 index=0
 ingStart=False
@@ -34,6 +35,12 @@ ingStart=False
 for w in splitHtml:
 	if ingStart:
 		ingredientList.append(w)
+		if w==ingStrEndLst[index]:
+			index+=1
+		else:
+			index=0
+		if index==len(ingStrEndLst):
+			break
 	if not ingStart:
 		if w==ingStrLst[index]:
 			index+=1
@@ -41,22 +48,21 @@ for w in splitHtml:
 			index=0
 		if index==len(ingStrLst):
 			ingStart=True
+			index=0
 
-print ingredientList
+currentIng=""
+finalIngredients=[]
+for w in ingredientList:
+	if w=="ADVERTISEMENT":
+		finalIngredients.append(currentIng)
+		currentIng=""
+	else:
+		if currentIng=="":
+			currentIng+=w
+		else:
+			currentIng=currentIng+" "+w
+print finalIngredients
 
-# ingStr="Find the closest stores(uses your location)"
-# startIng=False
-# currIndex=0
-# for c in refinedHtml:
-# 	if c!=" ":
-# 		if startIng==False:
-# 			if c==ingStr[currIndex]:
-# 				currIndex+=1
-# 			else:
-# 				currIndex=0
-# 			if currIndex==len(ingStr):
-# 				startIng=True
-# 	if startIng==True:
-# 		ingredientString=ingredientString+c
 
-#print rerefinedHtml
+
+
