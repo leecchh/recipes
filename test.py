@@ -61,8 +61,49 @@ for w in ingredientList:
 			currentIng+=w
 		else:
 			currentIng=currentIng+" "+w
-print finalIngredients
+#print finalIngredients
+
+dirStartStr="<span class=\"recipe-directions__list--item\">"
+dirEndStr="</span></li>"
+finalEndStr="</ol>"
+currIndex=0
+endIndex=0
+finalIndex=0
+dirStartBool=False
+currDirections=""
+directionsList=[]
+
+for c in htmlString:
+	if dirStartBool:
+		currDirections+=c
+		if c==dirEndStr[endIndex]:
+			endIndex+=1
+		else:
+			endIndex=0
+		if endIndex==len(dirEndStr):
+			directionsList.append(currDirections[0:len(currDirections)-len(dirEndStr)])
+			currDirections=""
+			currIndex=0
+			endIndex=0
+			finalIndex=0
+			dirStartBool=False
+
+		if c==finalEndStr[finalIndex]:
+			finalIndex+=1
+		else:
+			finalIndex=0
+		if finalIndex==len(finalEndStr):
+			break
+	if not dirStartBool:
+		if c==dirStartStr[currIndex]:
+			currIndex+=1
+		else:
+			currIndex=0
+		if currIndex==len(dirStartStr):
+			dirStartBool=True
 
 
+print directionsList
 
+#print refinedHtml
 
