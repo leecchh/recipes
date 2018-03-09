@@ -113,23 +113,31 @@ print directionsList
 #Part 2, Transformation
 healthy=["celery", "carrots"]
 notHealthy=["butter", "marjoram"]
-healthyReplace=[['chopped celery', '1 cup'], ['chopped carrots', '1/4 cup']]
+healthyReplace=[['celery', '1 cup'], ['carrots', '1/4 cup']]
 notHealthyReplace=[['butter', '1/4 cup'], ['bacon', '4 strips']]
 parsedIngredients=[['chopped, cooked chicken meat', '4 cups'], ['chopped celery', '1 cup'], ['chopped carrots', '1/4 cup'], ['chopped onion', '1/4 cup'], ['butter', '1/4 cup'], ['egg noodles', '8 ounces'], ['water', '12 cups'], ['chicken bouillon', '9'], ['dried marjoram', '1/2 teaspoon'], ['ground black pepper', '1/2 teaspoon'], ['leaf', '1'], ['dried parsley', '1 tablespoon']]
 
 #print parsedIngredients
 ingredientChange=[]
 #################Remove healthy ingredients
+# for i in range(0,len(parsedIngredients)):
+# 	words=parsedIngredients[i][0].split()
+# 	for word in words:
+# 		for j in range(0,len(healthy)):
+# 			if word==healthy[j]:
+# 				parsedIngredients[i]=notHealthyReplace[j]
+# 				ingredientChange.append([word, notHealthyReplace[j][0]])
+
+################Remove unhealthy ingredients
 for i in range(0,len(parsedIngredients)):
 	words=parsedIngredients[i][0].split()
 	for word in words:
-		for j in range(0,len(healthy)):
-			if word==healthy[j]:
-				parsedIngredients[i]=notHealthyReplace[j]
-				ingredientChange.append([word, notHealthyReplace[j][0]])
+		for j in range(0,len(notHealthy)):
+			if word==notHealthy[j]:
+				parsedIngredients[i]=healthyReplace[j]
+				ingredientChange.append([word, healthyReplace[j][0]])
 
-#print parsedIngredients
-
+print ingredientChange
 for i in range(0,len(directionsList)):
 	words=directionsList[i].split()
 	for j in range(0, len(words)):
@@ -144,22 +152,6 @@ for i in range(0,len(directionsList)):
 	directionsList[i]=newDirections
 
 print directionsList
-
-
-#################Remove unhealthy ingredients
-# for i in range(0,len(parsedIngredients)):
-# 	words=parsedIngredients[i][0].split()
-# 	for word in words:
-# 		if word in notHealthy:
-# 			parsedIngredients[i]=[]
-
-# ingredientsNumber=len(parsedIngredients)
-# for i in range(ingredientsNumber-1,-1,-1):
-# 	if parsedIngredients[i]==[]:
-# 		del parsedIngredients[i]
-
-# print parsedIngredients
-
 
 
 
