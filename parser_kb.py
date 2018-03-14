@@ -1,4 +1,5 @@
 
+import random
 
 
 methods = ['cook', 'simmer','heat','roast','barbecue', 'barbeque','grill', 'broil', 'sear','bake','fry','boil','poach','steam','saute','smoke']
@@ -10,8 +11,8 @@ non_vegan = ['egg']
 vegetables = ['tomato', 'spinach','basil','celery','yam','pickle','cucumber','artichoke','arugula','asparagus','avocado','gourd','beet','green beans','bok choy', 'broccoli', 'chard','kale','chive','corn','mushroom', 'coriander','fennel','garlic','heart of palm', 'lettuce','olive','onion', 'pepper','potato','pumpkin','radish','nori','seaweed', 'sprout','squash','cabbage','shoots','zucchini']
 meat_subs = ['tofu','mushroom', 'jackfruit','eggplant','beets']
 tools = ['saucepan', 'pan', 'baking sheet', 'sheet', 'dish', 'toaster', 'fork','knife','plate','steamer','cooker','roaster','frier','kettle','grill','pan','wok','blender','bowl', 'masher','peeler','grater','knife','whisk','spoon','spatula','tongs','ladle', 'measuring cup', 'funnel', 'thermometer','blow torch', 'broiler', 'pot']
-measurements = ['cup','tablespoon','quart','gallon','pinch','handful', 'pound', 'ounce','gram','stick','teaspoon']
-
+measurements = ['cup','tablespoon','quart','gallon','pinch','handful', 'pound', 'ounce','gram','stick','teaspoon','cube']
+sauce = ['sauce']
 
 
 
@@ -59,15 +60,28 @@ def is_number(s):
         pass
     return False
 
-def ing_and_amount(ingredientl):
+def parse_ingredient(ingredientl):
     amounts = []
     for ing in ingredientl:
         if is_number(ing[0]):
-            x = ing.split(' ',2)
-            if isin(x[1], measurements):
-                amounts.append([x[2], x[0]+ ' ' +x[1]])
+            if is_number(ing[1]):
+                x = ing.split(' ',3)
+                if isin(x[2], measurements):
+                    amounts.append([x[3], x[0]+ ' ' +x[1]+ ' '+x[2]])
+                else:
+                    if len(x) == 4:
+                        amounts.append([x[2]+ ' '+ x[3], x[0]+ ' ' +x[1]])
+                    else:
+                        amounts.append([x[2], x[0]+ ' ' +x[1]])
             else:
-                amounts.append([x[2], x[0]])
+                x = ing.split(' ',2)
+                if isin(x[1], measurements):
+                    amounts.append([x[2], x[0]+ ' ' +x[1]])
+                else:
+                    if len(x) == 3:
+                        amounts.append([x[1]+ ' '+ x[2], x[0]])
+                    else:
+                        amounts.append([x[1], x[0]])
     return amounts
 
 
@@ -99,7 +113,7 @@ def isveg(ingredientl):
 
 def makenonveg(ingredientl, directionsl):
     ingredientl.append(['bacon bits','to taste'])
-    directionsl.append(['Sprink bacon bits on top of dish'])
+    directionsl.append(['Sprinkle bacon bits on top of dish'])
 
 
 def makeveg(ingredientl, directionsl):
@@ -107,10 +121,11 @@ def makeveg(ingredientl, directionsl):
     new_directions = []
     if a != True:
         for word in a:
+            xyz = random.choice(meat_subs)
             for ingredient in ingredientl:
-                ingredient[0] = ingredient[0].replace(word, "veggies")
+                ingredient[0] = ingredient[0].replace(word, xyz)
             for direction in directionsl:
-                new_directions.append(direction.replace(word, "veggies"))
+                new_directions.append(direction.replace(word, xyz))
         return ingredientl, new_directions
     else:
         return "ingredients already vegetarian"
@@ -118,7 +133,11 @@ def makeveg(ingredientl, directionsl):
 
 
 
-file = open("/Users/nickparedes/Downloads/recipes-tony-branch/chicken.txt","r")
+import urllib
+
+#URL for recipes
+url = "https://www.allrecipes.com/recipe/188957/drunken-shrimp/?internalSource=streams&referringId=1237&referringContentType=recipe%20hub&clickId=st_trending_s"
+file = urllib.urlopen(url)
 htmlString=file.read()
 
 refinedHtml=""
@@ -180,8 +199,9 @@ for w in ingredientList:
 		if currentIng=="":
 			currentIng+=w
 		else:
-			currentIng=currentIng+" "+w
-x = ing_and_amount(finalIngredients)
+                        currentIng=currentIng+" "+w
+        x = parse_ingredient(finalIngredients)
+
 
 dirStartStr="<span class=\"recipe-directions__list--item\">"
 dirEndStr="</span></li>"
@@ -222,11 +242,12 @@ for c in htmlString:
 		if currIndex==len(dirStartStr):
 			dirStartBool=True
 
-print find(directionsList, methods)
-print find(directionsList,tools)
-print directionsList
-print makeveg(x,directionsList)
-    
+
+#print directionsList
+
+
+#print find(directionsList, methods)
+#print find(directionsList,tools)
+#print directionsList
+print makeveg(x, directionsList)
  
-
-
