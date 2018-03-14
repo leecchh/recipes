@@ -118,14 +118,14 @@ healthy=["celery", "carrots"]
 notHealthy=["butter", "marjoram"]
 healthyReplace=[['celery', '1 cup'], ['carrots', '1/4 cup']]
 notHealthyReplace=[['butter', '1/4 cup'], ['bacon', '4 strips']]
-vegetables = ['tomato', 'spinach']
-vegetablesReplace = ['tomato', 'spinach']
 meat = ['beef','chicken']
 meatReplace = ['vegetarian beef', 'vegetarian chicken']
 
 parsedIngredients=[['chopped, cooked chicken meat', '4 cups'], ['chopped celery', '1 cup'], ['chopped carrots', '1/4 cup'], ['chopped onion', '1/4 cup'], ['butter', '1/4 cup'], ['egg noodles', '8 ounces'], ['water', '12 cups'], ['chicken bouillon', '9'], ['dried marjoram', '1/2 teaspoon'], ['ground black pepper', '1/2 teaspoon'], ['leaf', '1'], ['dried parsley', '1 tablespoon']]
 addHawaiianIng=[['pineapples', '5 slices'],['macadamia nuts', '1 cup']]
 addHawaiianDir=['Sprinkle macadamia nuts on top, decorate with pineapple slices.']
+addMeatIng=[['bacon bits', '1 cup']]
+addMeatDir=['Sprinkle bacon bits on top of dish.']
 
 #print parsedIngredients
 ingredientChange=[]
@@ -160,9 +160,9 @@ if transformSelection=='V':
 					words[k]=meatReplace[j]
 					parsedIngredients[i][0]=' '.join(words)
 
-################Change healthy-unhealthy
+################Change healthy-unhealthy, vegetarian-nonvegetarian
 
-if transformSelection!='HA':
+if transformSelection!='HA' and transformSelection!='NV':
 	for i in range(0,len(directionsList)):
 		words=directionsList[i].split()
 		for j in range(0, len(words)):
@@ -181,6 +181,12 @@ if transformSelection=='HA':
 	for newIng in addHawaiianIng:
 		parsedIngredients.append(newIng)
 	for newDir in addHawaiianDir:
+		directionsList.append(newDir)
+
+if transformSelection=='NV':
+	for newIng in addMeatIng:
+		parsedIngredients.append(newIng)
+	for newDir in addMeatDir:
 		directionsList.append(newDir)
 
 print ingredientChange
