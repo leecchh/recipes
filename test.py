@@ -122,7 +122,6 @@ for w in ingredientList:
 			currentIng+=w
 		else:
 			currentIng=currentIng+" "+w
-#print finalIngredients
 
 dirStartStr="<span class=\"recipe-directions__list--item\">"
 dirEndStr="</span></li>"
@@ -228,6 +227,7 @@ if transformSelection=='V':
 					words[k]=meatReplace[j]+sep
 					parsedIngredients[i][0]=' '.join(words)
 
+################Hawaii replace all meat with ham
 if transformSelection=='HA':
 	for i in range(0,len(parsedIngredients)):
 		words=parsedIngredients[i][0].split()
@@ -259,13 +259,14 @@ if transformSelection!='NV' and transformSelection!='NT':
 		newDirections=' '.join(words)
 		directionsList[i]=newDirections
 
-################Hawaii
+################Hawaii add ingredients
 if transformSelection=='HA':
 	for newIng in addHawaiianIng:
 		parsedIngredients.append(newIng)
 	for newDir in addHawaiianDir:
 		directionsList.append(newDir)
 
+################Nonvegetarian add bacon
 if transformSelection=='NV':
 	for newIng in addMeatIng:
 		parsedIngredients.append(newIng)
