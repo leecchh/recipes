@@ -107,7 +107,10 @@ for c in htmlString:
 			dirStartBool=True
 
 
-print directionsList
+#Let user select what transformation they want
+transformSelection = raw_input("What transformation do you want? V for vegetarian, NV for non-vegetarian, H for healthy, UH for unhealthy, HA for Hawaiian\n")
+
+#print directionsList
 
 ###################################
 #Part 2, Transformation
@@ -115,52 +118,73 @@ healthy=["celery", "carrots"]
 notHealthy=["butter", "marjoram"]
 healthyReplace=[['celery', '1 cup'], ['carrots', '1/4 cup']]
 notHealthyReplace=[['butter', '1/4 cup'], ['bacon', '4 strips']]
+vegetables = ['tomato', 'spinach']
+vegetablesReplace = ['tomato', 'spinach']
+meat = ['beef','chicken']
+meatReplace = ['vegetarian beef', 'vegetarian chicken']
+
 parsedIngredients=[['chopped, cooked chicken meat', '4 cups'], ['chopped celery', '1 cup'], ['chopped carrots', '1/4 cup'], ['chopped onion', '1/4 cup'], ['butter', '1/4 cup'], ['egg noodles', '8 ounces'], ['water', '12 cups'], ['chicken bouillon', '9'], ['dried marjoram', '1/2 teaspoon'], ['ground black pepper', '1/2 teaspoon'], ['leaf', '1'], ['dried parsley', '1 tablespoon']]
+addHawaiianIng=[['pineapples', '5 slices'],['macadamia nuts', '1 cup']]
+addHawaiianDir=['Sprinkle macadamia nuts on top, decorate with pineapple slices.']
 
 #print parsedIngredients
 ingredientChange=[]
-#################Remove healthy ingredients
-# for i in range(0,len(parsedIngredients)):
-# 	words=parsedIngredients[i][0].split()
-# 	for word in words:
-# 		for j in range(0,len(healthy)):
-# 			if word==healthy[j]:
-# 				parsedIngredients[i]=notHealthyReplace[j]
-# 				ingredientChange.append([word, notHealthyReplace[j][0]])
+################Remove healthy ingredients
+if transformSelection=='UH':
+	for i in range(0,len(parsedIngredients)):
+		words=parsedIngredients[i][0].split()
+		for word in words:
+			for j in range(0,len(healthy)):
+				if word==healthy[j]:
+					parsedIngredients[i]=notHealthyReplace[j]
+					ingredientChange.append([word, notHealthyReplace[j][0]])
 
-################Remove unhealthy ingredients
-# for i in range(0,len(parsedIngredients)):
-# 	words=parsedIngredients[i][0].split()
-# 	for word in words:
-# 		for j in range(0,len(notHealthy)):
-# 			if word==notHealthy[j]:
-# 				parsedIngredients[i]=healthyReplace[j]
-# 				ingredientChange.append([word, healthyReplace[j][0]])
+###############Remove unhealthy ingredients
+if transformSelection=='H':
+	for i in range(0,len(parsedIngredients)):
+		words=parsedIngredients[i][0].split()
+		for word in words:
+			for j in range(0,len(notHealthy)):
+				if word==notHealthy[j]:
+					parsedIngredients[i]=healthyReplace[j]
+					ingredientChange.append([word, healthyReplace[j][0]])
 
+###############Remove meats
+if transformSelection=='V':
+	for i in range(0,len(parsedIngredients)):
+		words=parsedIngredients[i][0].split()
+		for k in range(0,len(words)):
+			for j in range(0,len(meat)):
+				if words[k]==meat[j]:
+					ingredientChange.append([words[k], meatReplace[j]])
+					words[k]=meatReplace[j]
+					parsedIngredients[i][0]=' '.join(words)
+
+################Change healthy-unhealthy
+
+if transformSelection!='HA':
+	for i in range(0,len(directionsList)):
+		words=directionsList[i].split()
+		for j in range(0, len(words)):
+			for pairs in ingredientChange:
+				if pairs[0]==words[j]:
+					words[j]=pairs[1]
+				if pairs[0]==(words[j])[0:len(words[j])-1]:
+					separate=(words[j])[len(words[j])-1:len(words[j])]
+					words[j]=pairs[1]
+					words[j]=words[j]+separate
+		newDirections=' '.join(words)
+		directionsList[i]=newDirections
 
 ################Hawaii
-#ADD SPLICED PINEAPPLES FOR DECORATION
-#ONE MORE IDEA
-
-
+if transformSelection=='HA':
+	for newIng in addHawaiianIng:
+		parsedIngredients.append(newIng)
+	for newDir in addHawaiianDir:
+		directionsList.append(newDir)
 
 print ingredientChange
-for i in range(0,len(directionsList)):
-	words=directionsList[i].split()
-	for j in range(0, len(words)):
-		for pairs in ingredientChange:
-			if pairs[0]==words[j]:
-				words[j]=pairs[1]
-			if pairs[0]==(words[j])[0:len(words[j])-1]:
-				separate=(words[j])[len(words[j])-1:len(words[j])]
-				words[j]=pairs[1]
-				words[j]=words[j]+separate
-	newDirections=' '.join(words)
-	directionsList[i]=newDirections
-
+print parsedIngredients
 print directionsList
 
-
-
-#print refinedHtml
 
