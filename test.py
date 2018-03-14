@@ -1,7 +1,65 @@
 import urllib
 
+measurements = ['cup','tablespoon','quart','gallon','pinch','handful', 'pound', 'ounce','gram','stick','teaspoon','cube']
+methods = ['cook', 'simmer','heat','roast','barbecue', 'barbeque','grill', 'broil', 'sear','bake','fry','boil','poach','steam','saute','smoke']
+tools = ['saucepan', 'pan', 'baking sheet', 'sheet', 'dish', 'toaster', 'fork','knife','plate','steamer','cooker','roaster','frier','kettle','grill','pan','wok','blender','bowl', 'masher','peeler','grater','knife','whisk','spoon','spatula','tongs','ladle', 'measuring cup', 'funnel', 'thermometer','blow torch', 'broiler', 'pot', 'skillet', 'whisk']
+
+def find(inputs, terms):
+	result_set = set()
+	for inp in inputs:
+		for term in terms:
+			if term.lower() in inp.lower():
+				result_set.add(term)
+	return result_set
+
+def isin(word, wordlist):
+    for werd in wordlist:
+        if werd.lower() in word.lower():
+            return True
+    return False
+
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+ 
+    try:
+        import unicodedata
+        unicodedata.numeric(s)
+        return True
+    except (TypeError, ValueError):
+        pass
+    return False
+
+def parse_ingredient(ingredientl):
+    amounts = []
+    for ing in ingredientl:
+        if is_number(ing[0]):
+            if is_number(ing[1]):
+                x = ing.split(' ',3)
+                if isin(x[2], measurements):
+                    amounts.append([x[3], x[0]+ ' ' +x[1]+ ' '+x[2]])
+                else:
+                    if len(x) == 4:
+                        amounts.append([x[2]+ ' '+ x[3], x[0]+ ' ' +x[1]])
+                    else:
+                        amounts.append([x[2], x[0]+ ' ' +x[1]])
+            else:
+                x = ing.split(' ',2)
+                if isin(x[1], measurements):
+                    amounts.append([x[2], x[0]+ ' ' +x[1]])
+                else:
+                    if len(x) == 3:
+                        amounts.append([x[1]+ ' '+ x[2], x[0]])
+                    else:
+                        amounts.append([x[1], x[0]])
+    return amounts
+
 #URL for recipes
-url = "https://www.allrecipes.com/recipe/8562/chicken-noodle-soup/?internalSource=hub%20recipe&referringContentType=search%20results&clickId=cardslot%202"
+#url = "https://www.allrecipes.com/recipe/8562/chicken-noodle-soup/?internalSource=hub%20recipe&referringContentType=search%20results&clickId=cardslot%202"
+url="https://www.allrecipes.com/recipe/25759/steves-chicken-noodle-soup/?internalSource=hub%20recipe&referringContentType=search%20results&clickId=cardslot%205"
 file = urllib.urlopen(url)
 htmlString=file.read()
 
@@ -108,7 +166,11 @@ for c in htmlString:
 
 
 #Let user select what transformation they want
-transformSelection = raw_input("What transformation do you want? V for vegetarian, NV for non-vegetarian, H for healthy, UH for unhealthy, HA for Hawaiian\n")
+transformSelection = ""
+while transformSelection not in ["V","NV","H","UH","HA","NT"]:
+	transformSelection = raw_input("What transformation do you want? V for vegetarian, NV for non-vegetarian, H for healthy, UH for unhealthy, HA for Hawaiian, NT for no transformation\n")
+	if transformSelection not in ["V","NV","H","UH","HA","NT"]:
+		print "Please enter a valid transformation"
 
 #print directionsList
 
@@ -118,10 +180,12 @@ healthy=["celery", "carrots"]
 notHealthy=["butter", "marjoram"]
 healthyReplace=[['celery', '1 cup'], ['carrots', '1/4 cup']]
 notHealthyReplace=[['butter', '1/4 cup'], ['bacon', '4 strips']]
-meat = ['beef','chicken']
-meatReplace = ['vegetarian beef', 'vegetarian chicken']
+meat = ['beef','liver','tongue','bone','buffalo','bison','calf', 'caribou', 'goat', 'ham', 'horse','lamb', 'marrow', 'moose', 'mutton', 'pork', 'bacon', 'rabbit', 'snake','alligator', 'ostrich', 'tripe', 'turtle', 'veal', 'tripe','ground beef','prosciutto','sausage','chicken']
+meatReplace=[]
+for m in meat:
+	meatReplace.append("vegetarian "+m)
 
-parsedIngredients=[['chopped, cooked chicken meat', '4 cups'], ['chopped celery', '1 cup'], ['chopped carrots', '1/4 cup'], ['chopped onion', '1/4 cup'], ['butter', '1/4 cup'], ['egg noodles', '8 ounces'], ['water', '12 cups'], ['chicken bouillon', '9'], ['dried marjoram', '1/2 teaspoon'], ['ground black pepper', '1/2 teaspoon'], ['leaf', '1'], ['dried parsley', '1 tablespoon']]
+parsedIngredients=parse_ingredient(finalIngredients)
 addHawaiianIng=[['pineapples', '5 slices'],['macadamia nuts', '1 cup']]
 addHawaiianDir=['Sprinkle macadamia nuts on top, decorate with pineapple slices.']
 addMeatIng=[['bacon bits', '1 cup']]
@@ -189,8 +253,20 @@ if transformSelection=='NV':
 	for newDir in addMeatDir:
 		directionsList.append(newDir)
 
-print ingredientChange
+#print ingredientChange
+print "Ingredients: "
 print parsedIngredients
-print directionsList
+print ""
+print "Tools: "
+print find(directionsList, tools)
+print ""
+print "Methods: "
+print find(directionsList, methods)
+print ""
+
+#printing direction list
+for i in range(0,len(directionsList)):
+	numStr=str(i+1)
+	print numStr+") "+directionsList[i]
 
 
