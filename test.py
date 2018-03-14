@@ -171,10 +171,9 @@ while transformSelection not in ["V","NV","H","UH","HA","NT"]:
 	if transformSelection not in ["V","NV","H","UH","HA","NT"]:
 		print "Please enter a valid transformation"
 
-#print directionsList
-
 ###################################
 #Part 2, Transformation
+#Database for transformation
 healthy=["unsweetened applesauce", "cottage cheese", 'yogurt', 'half and half', 'black beans', 'flaxseeds', 'lettuce', 'quinoa', 'celery', 'cashews', 'unsweetened applesauce', 'reduced fat peanut butter', 'cacao nibs', 'red wine', 'almond milk', 'citrus juice', 'low-sodium soy sauce', 'yams', 'olive oil spray', 'brown rice', 'wheat bread', 'greek yogurt', 'pureed fruit', 'ground turkey']
 notHealthyReplace=[["butter", "1 tbsp"], ["cheese", "2 slices"], ["sour cream", "2 tbsp"], ['heavy cream', "1/2 cup"], ['flour', "1 cup"], ['bread crumbs', "1/2 cup"], ['tortilla', "2"], ['oatmeal', "1 cup"], ['pita', "2 slices"], ['croutons', "1/2 cup"], ['sugar', "2 tbsp"], ['peanut butter', "2 tbsp"], ['chocolate chips', "1/4 cup"], ['white wine', "1 cup"], ['milk', "2 cup"], ['salt', 'to taste'], ['soy sauce', 'to taste'], ['potatoes', '1/2 lb'], ['olive oil', '2 tbsp'], ['white rice', '1 cup'], ['white bread', '2 slices'], ['mayo', '1 tbsp'], ['syrup', '1 tbsp'], ['ground beef', '1 lb']]
 
@@ -182,6 +181,9 @@ notHealthy=["butter", "cheese", "sour cream", 'heavy cream', 'flour', 'bread cru
 healthyReplace= [["unsweetened applesauce", "1/2 cup"], ["cottage cheese", "1/4 cup"], ["yogurt", "2 tbsp"], ['half and half', "1/2 cup"], ['black beans', "1 cup"], ['flaxseeds', "1/2 cup"], ['lettuce', "2 leaves"], ['quinoa', "1 cup"], ['celery', "2 slices"], ['cashews', "1/2 cup"], ['unsweetened applesauce', "2 tbsp"], ['reduced fat peanut butter', "2 tbsp"], ['cacao nibs', "1/4 cup"], ["red wine", "1 cup"], ['almond milk', "2 cup"], ['citrus juice', 'to taste'], ['low-sodium soy sauce', 'to taste'], ['yams', '1/2 lb'], ['olive oil spray', '2 tbsp'], ['brown rice', '1 cup'],['wheat bread', '2 slices'], ['greek yogurt', '1 tbsp'], ['pureed fruit', '2 tbsp'], ['ground turkey', '1 lb']]
 
 meat = ['beef','liver','tongue','bone','buffalo','bison','calf', 'caribou', 'goat', 'ham', 'horse','lamb', 'marrow', 'moose', 'mutton', 'pork', 'bacon', 'rabbit', 'snake','alligator', 'ostrich', 'tripe', 'turtle', 'veal', 'tripe','ground beef','prosciutto','sausage','chicken']
+fish = ['fish', 'salmon', 'tilapia', 'trout', 'yellow tail', 'flounder', 'sea bass', 'halibut','octopus', 'scallop', 'shrimp', 'oyster', 'clam', 'mussle', 'lobster', 'crab', 'crawfish' ]
+meat=meat+fish
+
 meatReplace=[]
 for m in meat:
 	meatReplace.append("vegetarian "+m)
@@ -210,7 +212,7 @@ if transformSelection=='H':
 				parsedIngredients[i]=healthyReplace[j]
 				ingredientChange.append([notHealthy[j], healthyReplace[j][0]])
 
-###############Remove meats
+###############Remove meats, add vegetarian meat
 if transformSelection=='V':
 	for i in range(0,len(parsedIngredients)):
 		words=parsedIngredients[i][0].split()
@@ -226,9 +228,24 @@ if transformSelection=='V':
 					words[k]=meatReplace[j]+sep
 					parsedIngredients[i][0]=' '.join(words)
 
+if transformSelection=='HA':
+	for i in range(0,len(parsedIngredients)):
+		words=parsedIngredients[i][0].split()
+		for k in range(0,len(words)):
+			for j in range(0,len(meat)):
+				if words[k]==meat[j]:
+					ingredientChange.append([words[k], "ham"])
+					words[k]="ham"
+					parsedIngredients[i][0]=' '.join(words)
+				if (words[k])[0:len(words[k])-1]==meat[j]:
+					ingredientChange.append([(words[k])[0:len(words[k])-1], "ham"])
+					sep=(words[k])[len(words[k])-1:len(words[k])]
+					words[k]="ham"+sep
+					parsedIngredients[i][0]=' '.join(words)
+
 ################Change healthy-unhealthy, vegetarian-nonvegetarian
 
-if transformSelection!='HA' and transformSelection!='NV':
+if transformSelection!='NV' and transformSelection!='NT':
 	for i in range(0,len(directionsList)):
 		words=directionsList[i].split()
 		for j in range(0, len(words)):
@@ -255,7 +272,7 @@ if transformSelection=='NV':
 	for newDir in addMeatDir:
 		directionsList.append(newDir)
 
-print ingredientChange
+# Print the output for ingredients, tools, and methods
 print "Ingredients: "
 print parsedIngredients
 print ""
