@@ -1,5 +1,11 @@
 import urllib
 
+#URL for recipes
+#url = "https://www.allrecipes.com/recipe/8562/chicken-noodle-soup/?internalSource=hub%20recipe&referringContentType=search%20results&clickId=cardslot%202"
+url="https://www.allrecipes.com/recipe/25759/steves-chicken-noodle-soup/?internalSource=hub%20recipe&referringContentType=search%20results&clickId=cardslot%205"
+file = urllib.urlopen(url)
+htmlString=file.read()
+
 measurements = ['cup','tablespoon','quart','gallon','pinch','handful', 'pound', 'ounce','gram','stick','teaspoon','cube']
 methods = ['cook', 'simmer','heat','roast','barbecue', 'barbeque','grill', 'broil', 'sear','bake','fry','boil','poach','steam','saute','smoke']
 tools = ['saucepan', 'pan', 'baking sheet', 'sheet', 'dish', 'toaster', 'fork','knife','plate','steamer','cooker','roaster','frier','kettle','grill','pan','wok','blender','bowl', 'masher','peeler','grater','knife','whisk','spoon','spatula','tongs','ladle', 'measuring cup', 'funnel', 'thermometer','blow torch', 'broiler', 'pot', 'skillet', 'whisk']
@@ -56,12 +62,6 @@ def parse_ingredient(ingredientl):
                     else:
                         amounts.append([x[1], x[0]])
     return amounts
-
-#URL for recipes
-#url = "https://www.allrecipes.com/recipe/8562/chicken-noodle-soup/?internalSource=hub%20recipe&referringContentType=search%20results&clickId=cardslot%202"
-url="https://www.allrecipes.com/recipe/25759/steves-chicken-noodle-soup/?internalSource=hub%20recipe&referringContentType=search%20results&clickId=cardslot%205"
-file = urllib.urlopen(url)
-htmlString=file.read()
 
 refinedHtml=""
 rerefinedHtml=""
