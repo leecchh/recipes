@@ -129,13 +129,20 @@ ingredientChange=[]
 # 				ingredientChange.append([word, notHealthyReplace[j][0]])
 
 ################Remove unhealthy ingredients
-for i in range(0,len(parsedIngredients)):
-	words=parsedIngredients[i][0].split()
-	for word in words:
-		for j in range(0,len(notHealthy)):
-			if word==notHealthy[j]:
-				parsedIngredients[i]=healthyReplace[j]
-				ingredientChange.append([word, healthyReplace[j][0]])
+# for i in range(0,len(parsedIngredients)):
+# 	words=parsedIngredients[i][0].split()
+# 	for word in words:
+# 		for j in range(0,len(notHealthy)):
+# 			if word==notHealthy[j]:
+# 				parsedIngredients[i]=healthyReplace[j]
+# 				ingredientChange.append([word, healthyReplace[j][0]])
+
+
+################Hawaii
+#ADD SPLICED PINEAPPLES FOR DECORATION
+#ONE MORE IDEA
+
+
 
 print ingredientChange
 for i in range(0,len(directionsList)):
