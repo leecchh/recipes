@@ -176,10 +176,17 @@ while transformSelection not in ["V","NV","H","UH","HA","NT"]:
 
 ###################################
 #Part 2, Transformation
-healthy=["celery", "carrots"]
-notHealthy=["butter", "marjoram"]
-healthyReplace=[['celery', '1 cup'], ['carrots', '1/4 cup']]
-notHealthyReplace=[['butter', '1/4 cup'], ['bacon', '4 strips']]
+healthy=["celery", "carrot", "fresh rosemary"]
+
+
+
+
+notHealthy=["butter", "marjoram", "fresh rosemary"]
+healthyReplace=[['celery', '1 cup'], ['carrots', '1/4 cup'], ['carrots', '1/4 cup']]
+
+
+
+notHealthyReplace=[['butter', '1/4 cup'], ['bacon', '4 strips'], ['carrots', '1/4 cup']]
 meat = ['beef','liver','tongue','bone','buffalo','bison','calf', 'caribou', 'goat', 'ham', 'horse','lamb', 'marrow', 'moose', 'mutton', 'pork', 'bacon', 'rabbit', 'snake','alligator', 'ostrich', 'tripe', 'turtle', 'veal', 'tripe','ground beef','prosciutto','sausage','chicken']
 meatReplace=[]
 for m in meat:
@@ -196,22 +203,18 @@ ingredientChange=[]
 ################Remove healthy ingredients
 if transformSelection=='UH':
 	for i in range(0,len(parsedIngredients)):
-		words=parsedIngredients[i][0].split()
-		for word in words:
-			for j in range(0,len(healthy)):
-				if word==healthy[j]:
-					parsedIngredients[i]=notHealthyReplace[j]
-					ingredientChange.append([word, notHealthyReplace[j][0]])
+		for j in range(0,len(healthy)):
+			if healthy[j] in parsedIngredients[i][0]:
+				parsedIngredients[i]=notHealthyReplace[j]
+				ingredientChange.append([healthy[j], notHealthyReplace[j][0]])
 
 ###############Remove unhealthy ingredients
 if transformSelection=='H':
 	for i in range(0,len(parsedIngredients)):
-		words=parsedIngredients[i][0].split()
-		for word in words:
-			for j in range(0,len(notHealthy)):
-				if word==notHealthy[j]:
-					parsedIngredients[i]=healthyReplace[j]
-					ingredientChange.append([word, healthyReplace[j][0]])
+		for j in range(0,len(notHealthy)):
+			if notHealthy[j] in parsedIngredients[i][0]:
+				parsedIngredients[i]=healthyReplace[j]
+				ingredientChange.append([notHealthy[j], healthyReplace[j][0]])
 
 ###############Remove meats
 if transformSelection=='V':
@@ -253,7 +256,7 @@ if transformSelection=='NV':
 	for newDir in addMeatDir:
 		directionsList.append(newDir)
 
-#print ingredientChange
+print ingredientChange
 print "Ingredients: "
 print parsedIngredients
 print ""
