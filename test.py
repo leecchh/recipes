@@ -1,3 +1,6 @@
+#Names: Chung Ho (Tony) Lee, Alejandro Peredes
+#Version is Python 2, use import urllib
+
 import urllib
 
 #URL for recipes, change to test different recipes
