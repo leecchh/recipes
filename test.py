@@ -180,10 +180,6 @@ notHealthyReplace=[["butter", "1 tbsp"], ["cheese", "2 slices"], ["sour cream", 
 
 notHealthy=["butter", "cheese", "sour cream", 'heavy cream', 'flour', 'bread crumbs', 'tortilla', 'oatmeal', 'pita', 'croutons', 'sugar', 'peanut butter', 'chocolate chips', 'white wine', 'milk', 'salt', 'soy sauce', 'potatoes', 'olive oil', 'white rice', 'white bread', 'mayo', 'syrup', 'ground beef']
 healthyReplace= [["unsweetened applesauce", "1/2 cup"], ["cottage cheese", "1/4 cup"], ["yogurt", "2 tbsp"], ['half and half', "1/2 cup"], ['black beans', "1 cup"], ['flaxseeds', "1/2 cup"], ['lettuce', "2 leaves"], ['quinoa', "1 cup"], ['celery', "2 slices"], ['cashews', "1/2 cup"], ['unsweetened applesauce', "2 tbsp"], ['reduced fat peanut butter', "2 tbsp"], ['cacao nibs', "1/4 cup"], ["red wine", "1 cup"], ['almond milk', "2 cup"], ['citrus juice', 'to taste'], ['low-sodium soy sauce', 'to taste'], ['yams', '1/2 lb'], ['olive oil spray', '2 tbsp'], ['brown rice', '1 cup'],['wheat bread', '2 slices'], ['greek yogurt', '1 tbsp'], ['pureed fruit', '2 tbsp'], ['ground turkey', '1 lb']]
-print len(notHealthy)
-print len(healthyReplace)
-
-
 
 meat = ['beef','liver','tongue','bone','buffalo','bison','calf', 'caribou', 'goat', 'ham', 'horse','lamb', 'marrow', 'moose', 'mutton', 'pork', 'bacon', 'rabbit', 'snake','alligator', 'ostrich', 'tripe', 'turtle', 'veal', 'tripe','ground beef','prosciutto','sausage','chicken']
 meatReplace=[]
@@ -224,6 +220,11 @@ if transformSelection=='V':
 					ingredientChange.append([words[k], meatReplace[j]])
 					words[k]=meatReplace[j]
 					parsedIngredients[i][0]=' '.join(words)
+				if (words[k])[0:len(words[k])-1]==meat[j]:
+					ingredientChange.append([(words[k])[0:len(words[k])-1], meatReplace[j]])
+					sep=(words[k])[len(words[k])-1:len(words[k])]
+					words[k]=meatReplace[j]+sep
+					parsedIngredients[i][0]=' '.join(words)
 
 ################Change healthy-unhealthy, vegetarian-nonvegetarian
 
@@ -254,6 +255,7 @@ if transformSelection=='NV':
 	for newDir in addMeatDir:
 		directionsList.append(newDir)
 
+print ingredientChange
 print "Ingredients: "
 print parsedIngredients
 print ""
